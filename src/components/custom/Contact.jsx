@@ -184,7 +184,7 @@ function ContactSection() {
             className={`w-full sm:w-auto px-6 py-3 rounded-md font-semibold transition duration-300 ${
               loading
                 ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "bg-[#3B82F6] text-white hover:bg-green-400 text-black cursor-pointer"
+                : "text-white cursor-pointer"
             }`}
           >
             {loading ? "Sending..." : "Submit Message"}
@@ -199,7 +199,7 @@ function ContactSection() {
       <div className="mb-16 text-center">
         <Link
           to="/"
-          className="text-sm text-green-300 hover:text-green-200 transition duration-300 underline underline-offset-4"
+          className="text-sm text-white transition duration-300 underline underline-offset-4"
         >
           ← Back to Home
         </Link>
