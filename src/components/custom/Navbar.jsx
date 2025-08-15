@@ -12,14 +12,14 @@ function Navbar() {
             to={isProjectPage ? "/" : "/project"}
             className="flex items-center group"
           >
-            <span className="text-xl font-semibold relative transition-colors duration-300 hover:text-gray-400">
+            <span className="text-xs md:text-2xl font-semibold relative transition-colors duration-300 hover:text-gray-400">
               {isProjectPage ? "BACK TO HOME" : "THINGS I’VE MADE"}
             </span>
           </Link>
           <div className="w-auto">
             <Link
               to="/contact"
-              className="block py-2 px-3 text-xl font-semibold relative transition-colors duration-300 hover:text-gray-400"
+              className="block py-2 px-6 text-xs md:text-2xl font-semibold relative transition-colors duration-300 hover:text-gray-400"
               aria-current="page"
             >
               LET'S WORK TOGETHER
