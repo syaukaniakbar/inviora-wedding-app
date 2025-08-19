@@ -6,7 +6,7 @@ const reviews = [
   {
     img: "/davila.jpg",
     imgHover: "/davilaDetail.jpg",
-    slug: "digital-marketing-profile-company-davila",
+    slug: "digital-marketing-company-profile-davila",
   },
 
   {
@@ -17,13 +17,13 @@ const reviews = [
   {
     img: "/uwgmrun.png",
     imgHover: "/uwgmrunDetail.png",
-    slug: "uwgm-run-festival-or-event-registration-platform",
+    slug: "uwgm-run-or-event-registration-platform",
   },
 
   {
     img: "/sirkel.jpg",
     imgHover: "/sirkelDetail.jpg",
-    slug: "digital-marketing-agency-landing-page-sirkel",
+    slug: "digital-marketing-company-profile-sirkel",
   },
   {
     img: "/kaltimfolks.jpg",
@@ -58,7 +58,7 @@ function ReviewCard({ img, imgHover, slug }) {
           draggable={false}
         />
         <Link
-          to={`/portfolio/${slug}`}
+          to={`/project/${slug}`}
           className={`absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white px-4 py-2 bg-black/70 rounded-2xl text-sm font-semibold tracking-wide transition-all duration-300 ${
             hovered
               ? "opacity-100 scale-100"
