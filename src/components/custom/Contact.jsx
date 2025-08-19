@@ -1,17 +1,13 @@
 import React, { useState, useRef } from "react";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaLinkedin, FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 
 function ContactSection() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "", // digunakan untuk isian email user
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("");
-  const formRef = useRef();
+  const [status, setStatus] = useState({ type: "", message: "" });
+  const formRef = useRef(null);
 
   const handleChange = (e) => {
     setForm({
@@ -22,29 +18,25 @@ function ContactSection() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const confirm = window.confirm(
-      "Are you sure you want to send this message?"
-    );
-    if (!confirm) return;
+    if (!window.confirm("Are you sure you want to send this message?")) return;
 
     setLoading(true);
+    setStatus({ type: "", message: "" });
 
     try {
-      const result = await emailjs.sendForm(
-        "service_nbmeji9", // Ganti dengan service ID kamu
-        "template_l183cdb", // Ganti dengan template ID kamu
+      await emailjs.sendForm(
+        "service_nbmeji9",
+        "template_l183cdb",
         formRef.current,
-        "AxdvY_73s4G2KpLzj" // Ganti dengan public key kamu
+        "AxdvY_73s4G2KpLzj"
       );
 
-      console.log(result.text);
-      setStatus("Message sent successfully!");
+      setStatus({ type: "success", message: "Message sent successfully!" });
       setForm({ name: "", email: "", message: "" });
       formRef.current.reset();
     } catch (err) {
       console.error(err);
-      setStatus("Failed to send message.");
+      setStatus({ type: "error", message: "Failed to send message." });
     } finally {
       setLoading(false);
     }
@@ -68,10 +60,10 @@ function ContactSection() {
         <hr className="flex-1 border-t border-gray-500 opacity-60" />
       </div>
 
-      {/* Contact + Form */}
+      {/* Contact Info + Form */}
       <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto px-6 py-16 md:py-24 gap-12">
         {/* Contact Info */}
-        <div className="flex-1 text-white space-y-8">
+        <div className="flex-1 space-y-8">
           <div>
             <h3 className="text-sm font-semibold mb-2 tracking-widest">
               SEND AN E-MAIL
@@ -96,7 +88,7 @@ function ContactSection() {
               href="https://www.instagram.com/syaukaniabr/?hl=en"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-green-400 text-sm font-medium flex items-center gap-2 transition"
+              className="flex items-center gap-2 hover:text-gray-300 transition"
             >
               <FaInstagram /> Instagram
             </a>
@@ -104,21 +96,21 @@ function ContactSection() {
               href="https://wa.me/6285219594240"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-green-400 text-sm font-medium flex items-center gap-2 transition"
+              className="flex items-center gap-2 hover:text-gray-300 transition"
             >
               <FaWhatsapp /> Whatsapp
             </a>
             <a
-              href="#"
-              className="text-white hover:text-green-400 text-sm font-medium flex items-center gap-2 transition"
+              href="https://www.linkedin.com/in/akhmad-syaukani-akbar-974903253/"
+              className="flex items-center gap-2 hover:text-gray-300 transition"
             >
-              LinkedIn <span aria-hidden>↗</span>
+              <FaLinkedin /> LinkedIn
             </a>
             <a
-              href="#"
-              className="text-white hover:text-green-400 text-sm font-medium flex items-center gap-2 transition"
+              href="https://github.com/syaukaniakbar"
+              className="flex items-center gap-2 hover:text-gray-300 transition"
             >
-              Github <span aria-hidden>↗</span>
+              <FaGithub /> Github
             </a>
           </div>
         </div>
@@ -131,49 +123,55 @@ function ContactSection() {
         >
           {/* Name Field */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label htmlFor="name" className="block text-sm font-medium mb-2">
               Your Name
             </label>
             <input
+              id="name"
               name="name"
               type="text"
               value={form.name}
               onChange={handleChange}
               placeholder="Enter your full name"
               required
-              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-200"
+              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 transition"
             />
           </div>
 
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label
+              htmlFor="reply_to"
+              className="block text-sm font-medium mb-2"
+            >
               Your Email
             </label>
             <input
+              id="reply_to"
               name="reply_to"
               type="email"
               value={form.email}
               onChange={handleChange}
               placeholder="example@domain.com"
               required
-              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-200"
+              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 transition"
             />
           </div>
 
           {/* Message Field */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-300">
+            <label htmlFor="message" className="block text-sm font-medium mb-2">
               Message
             </label>
             <textarea
+              id="message"
               name="message"
               value={form.message}
               onChange={handleChange}
               placeholder="Write your message..."
               rows={5}
               required
-              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-200 resize-y"
+              className="w-full px-4 py-2 bg-neutral-900 text-white placeholder-gray-500 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-100 transition resize-y"
             />
           </div>
 
@@ -181,17 +179,25 @@ function ContactSection() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full sm:w-auto px-6 py-3 rounded-md font-semibold transition duration-300 ${
+            className={`w-full sm:w-auto px-6 py-3 rounded-md font-semibold transition ${
               loading
                 ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "text-white cursor-pointer"
+                : "bg-white text-black hover:bg-gray-200 cursor-pointer"
             }`}
           >
             {loading ? "Sending..." : "Submit Message"}
           </button>
 
           {/* Status Feedback */}
-          {status && <p className="text-sm text-green-300 mt-2">{status}</p>}
+          {status.message && (
+            <p
+              className={`text-sm mt-2 ${
+                status.type === "success" ? "text-green-400" : "text-red-400"
+              }`}
+            >
+              {status.message}
+            </p>
+          )}
         </form>
       </div>
 
