@@ -5,10 +5,10 @@ function Hero() {
     <>
       <section className="flex flex-col bg-black justify-center space-y-12">
         <div className="mx-auto max-w-screen-xl text-center ">
-          <h1 className="tracking-tight leading-snug text-left lg:text-center text-5xl sm:text-5xl md:text-6xl text-white px-12">
+          <h1 className="tracking-tight leading-snug text-left lg:text-center text-4xl sm:text-5xl md:text-6xl text-white px-12">
             I am a Software Developer based in East Borneo{" "}
-            <span className="inline-block bg-[#3B82F6] px-2">
-              <TypingAnimation className="text-5xl sm:text-5xl md:text-6xl font-normal text-white leading-none">
+            <span className="inline-block bg-gradient-to-r from-white via-gray-400 to-white px-0 md:px-2">
+              <TypingAnimation className="text-4xl sm:text-5xl md:text-6xl font-normal text-black leading-none">
                 turning bold ideas
               </TypingAnimation>
             </span>{" "}
