@@ -5,5 +5,5 @@ export default createClient({
   projectId: "s47peg38",
   dataset: "production",
   useCdn: true,
-  apiVersion: "2023-01-01",
+  apiVersion: "2024-01-01",
 });
