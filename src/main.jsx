@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -8,16 +8,16 @@ import Project from "./pages/Project.jsx";
 import ProjectDetail from "./pages/ProjectDetail.jsx";
 import Error404 from "./pages/Error404.jsx";
 
+const router = createBrowserRouter([
+  { path: "/", element: <Home /> },
+  { path: "/project", element: <Project /> },
+  { path: "/project/:slug", element: <ProjectDetail /> },
+  { path: "/contact", element: <ContactMe /> },
+  { path: "*", element: <Error404 /> },
+]);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project" element={<Project />} />
-        <Route path="/project/:slug" element={<ProjectDetail />} />
-        <Route path="/contact" element={<ContactMe />} />
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </Router>
+    <RouterProvider router={router} />
   </StrictMode>
 );
