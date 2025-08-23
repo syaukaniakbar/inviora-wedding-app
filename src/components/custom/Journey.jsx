@@ -38,7 +38,7 @@ function Journey() {
   ];
 
   return (
-    <section className="relative w-full bg-black py-24 overflow-hidden">
+    <section className="relative w-full bg-black py-12 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <motion.div
@@ -48,12 +48,12 @@ function Journey() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
+          <h2 className="text-3xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-white mb-4">
             My Professional Journey
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
-            A journey through the roles and companies that shaped my expertise
-            in UI/UX and frontend engineering.
+          <p className="text-sm md:text-2xl text-gray-200 font-medium leading-relaxed">
+            A journey through the roles and companies that shaped <br /> my
+            expertise in UI/UX and frontend engineering.
           </p>
         </motion.div>
 
@@ -74,7 +74,7 @@ function Journey() {
               </span>
 
               {/* Content Card */}
-              <div className="bg-black border-1 border-gray-600 p-12 rounded-3xl shadow-xl group-hover:shadow-white/10 transition-all duration-300 ml-7">
+              <div className="bg-black border-1 border-gray-600 p-6 md:p-12 rounded-3xl shadow-xl group-hover:shadow-white/10 transition-all duration-300 ml-7 ">
                 <h3 className="text-2xl font-bold text-white mb-1 select-none">
                   {exp.role}
                 </h3>
