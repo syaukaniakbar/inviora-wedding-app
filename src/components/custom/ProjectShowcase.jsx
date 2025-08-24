@@ -137,10 +137,10 @@ function ProjectShowcase() {
         aria-labelledby="projects-heading"
       >
         <header className="mb-16 text-center max-w-4xl" id="projects-heading">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-white mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-white mb-4 md:mb-6">
             My Creative Journey
           </h1>
-          <p className="text-sm md:text-2xl text-gray-200 font-medium leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-gray-200 font-medium leading-relaxed md:leading-loose max-w-prose mx-auto">
             A showcase of my boldest ideas, crafted with <br /> modern tech and
             creative passion.
           </p>
@@ -154,7 +154,7 @@ function ProjectShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, amount: 0.3 }}
-              className="flex flex-col h-full rounded-2xl overflow-hidden bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-500 select-none"
+              className="flex flex-col h-full rounded-2xl overflow-hidden p-2 bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-500 select-none"
             >
               <Link
                 to={`/project/${project.slug?.current}`}
@@ -162,7 +162,7 @@ function ProjectShowcase() {
                 aria-label={`View details for ${project.title}`}
               >
                 {/* Image */}
-                <div className="aspect-video w-full overflow-hidden relative">
+                <div className="aspect-video w-full overflow-hidden relative rounded-tr-xl rounded-tl-xl ">
                   <img
                     src={project.mainImage?.asset?.url || "/placeholder.jpg"}
                     alt={

@@ -48,12 +48,12 @@ function Journey() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-3xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-white mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-white mb-4 md:mb-6">
             My Professional Journey
           </h2>
-          <p className="text-sm md:text-2xl text-gray-200 font-medium leading-relaxed">
-            A journey through the roles and companies that shaped <br /> my
-            expertise in UI/UX and frontend engineering.
+          <p className="text-sm sm:text-base lg:text-xl md:text-2xl text-gray-200 font-medium leading-relaxed md:leading-loose max-w-prose mx-auto">
+            A journey through the roles and companies that shaped my expertise
+            in UI/UX and frontend engineering.
           </p>
         </motion.div>
 
