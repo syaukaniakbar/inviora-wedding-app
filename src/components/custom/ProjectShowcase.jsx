@@ -45,7 +45,6 @@ function ProjectShowcase() {
     const handler = setTimeout(() => {
       setSearchTerm(searchInput);
     }, 300);
-
     return () => clearTimeout(handler);
   }, [searchInput]);
 

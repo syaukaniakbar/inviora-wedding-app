@@ -19,7 +19,7 @@ function Navbar() {
           <div className="w-auto">
             <Link
               to="/contact"
-              className="block py-2 px-6 text-xs md:text-2xl font-semibold relative transition-colors duration-300 hover:text-gray-400"
+              className="block py-2 text-xs md:text-2xl font-semibold relative transition-colors duration-300 hover:text-gray-400"
               aria-current="page"
             >
               LET'S WORK TOGETHER

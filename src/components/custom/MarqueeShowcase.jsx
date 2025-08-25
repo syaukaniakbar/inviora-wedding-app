@@ -36,13 +36,13 @@ function ReviewCard({ img, imgHover, slug }) {
   const [hovered, setHovered] = React.useState(false);
   return (
     <figure
-      className="relative h-full w-130 md:w-130 lg:w-150 cursor-pointer overflow-hidden bg-neutral-900 group"
+      className="relative h-full w-100 md:w-130 lg:w-150 cursor-pointer overflow-hidden bg-neutral-900 group"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       tabIndex={0}
       aria-label="Project Preview"
     >
-      <div className="relative w-full h-90 md:h-100 lg:h-90">
+      <div className="relative w-full h-60 md:h-100 lg:h-90">
         <img
           className="object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ease-in-out"
           alt="Project preview"
