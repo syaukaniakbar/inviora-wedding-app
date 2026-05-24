@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router-dom";
-
 function Footer() {
-  const navigate = useNavigate();
   return (
-    <footer className="bg-black text-white">
-      <p className="text-gray-400 text-[10px] md:text-[16px] p-4  text-center tracking-wider">
-        © Developed by{" "}
-        <span className="text-gray-100">Akhmad Syaukani Akbar</span> Powered by
-        React
-      </p>
+    <footer className="relative bg-white">
+      <div className="relative mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-7 text-center">
+        {/* Small note */}
+        <p className="text-black">
+          With love and gratitude, we invite you to celebrate our special day
+        </p>
+      </div>
     </footer>
   );
 }

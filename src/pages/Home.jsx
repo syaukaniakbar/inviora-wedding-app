@@ -1,12 +1,18 @@
 import Layout from "@/layouts/Layout";
 import Hero from "@/components/custom/Hero";
-import MarqueeShowcase from "@/components/custom/MarqueeShowcase";
+import WeddingOpeningScreen from "@/components/custom/WeddingOpeningScreen";
+import WeddingEvent from "@/components/custom/WeddingEvent";
+import Gallery from "@/components/custom/Gallery";
+import WeddingGuestbookPreview from "@/components/custom/WeddingGuestbookPreview";
 
 function Home() {
   return (
     <Layout>
+      <WeddingOpeningScreen />
       <Hero />
-      <MarqueeShowcase />
+      <Gallery />
+      <WeddingEvent />
+      <WeddingGuestbookPreview />
     </Layout>
   );
 }
