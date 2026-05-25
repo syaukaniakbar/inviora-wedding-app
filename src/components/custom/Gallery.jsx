@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
     motion,
     AnimatePresence,
@@ -16,8 +16,9 @@ function Gallery() {
     const controls = useAnimation();
     const galleryRef = useRef(null);
 
-    // Replay animation whenever entering viewport
+    // Play animation once when entering viewport to prevent scroll jank
     const isInView = useInView(galleryRef, {
+        once: true,
         amount: 0.2,
         margin: "-10% 0px -10% 0px",
     });
@@ -25,8 +26,6 @@ function Gallery() {
     useEffect(() => {
         if (isInView) {
             controls.start("show");
-        } else {
-            controls.start("hidden");
         }
     }, [isInView, controls]);
 
@@ -43,36 +42,36 @@ function Gallery() {
         {
             id: 1,
             src: "/abang-eza-1.jpeg",
-            alt: "Prewedding main portrait",
-            caption: "The Beginning of Us",
+            alt: "Couple holding hands in studio",
+            caption: "Holding On to Forever",
             className:
                 "md:col-span-5 md:row-span-2 aspect-[3/4] md:aspect-auto md:h-full",
         },
         {
             id: 2,
             src: "/abang-eza-5.jpeg",
-            alt: "Candid moment laughing",
-            caption: "Laughter & Promises",
+            alt: "Formal studio portrait",
+            caption: "Elegance in Every Glance",
             className: "md:col-span-7 aspect-[16/10]",
         },
         {
             id: 3,
             src: "/abang-eza-3.jpeg",
-            alt: "Wedding ring detail",
-            caption: "Details of Forever",
+            alt: "Couple back to back in studio",
+            caption: "Different Souls, One Story",
             className: "md:col-span-3 aspect-square",
         },
         {
             id: 4,
             src: "/abang-eza-4.jpeg",
-            alt: "Couple embracing softly",
-            caption: "Hand in Hand",
+            alt: "Casual couple studio session",
+            caption: "Comfort Found in You",
             className: "md:col-span-4 aspect-square",
         },
     ];
 
     // PREMIUM STAGGER ANIMATION
-    const containerVariants = {
+    const containerVariants = useMemo(() => ({
         hidden: {},
         show: {
             transition: {
@@ -80,9 +79,9 @@ function Gallery() {
                 delayChildren: 0.05,
             },
         },
-    };
+    }), []);
 
-    const itemVariants = {
+    const itemVariants = useMemo(() => ({
         hidden: {
             opacity: 0,
             y: shouldReduceMotion ? 0 : 40,
@@ -97,7 +96,7 @@ function Gallery() {
                 ease: [0.22, 1, 0.36, 1],
             },
         },
-    };
+    }), [shouldReduceMotion]);
 
     return (
         <section className="relative overflow-hidden bg-[#f8f5f1] px-4 py-24 sm:px-6 md:px-12 lg:px-20 antialiased">

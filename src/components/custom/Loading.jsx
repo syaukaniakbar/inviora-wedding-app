@@ -1,27 +1,65 @@
-function Loading() {
+export default function Loading() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center text-center px-4">
-      <div className="relative mb-10">
-        <div className="absolute inset-0 w-28 h-28 m-auto rounded-full bg-gray-500 opacity-10 animate-ping" />
-        <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-gray-400 via-gray-700 to-gray-400 flex items-center justify-center shadow-2xl shadow-gray-400/30 border border-white/10">
-          <span className="text-3xl font-extrabold animate-pulse">⚡</span>
+    <div className="w-full max-w-2xl mx-auto px-4 py-8">
+      <div className="bg-white/80 backdrop-blur-sm border border-rose-100 rounded-3xl shadow-lg p-6 md:p-8">
+        {/* Header */}
+        <div className="text-center mb-8 animate-pulse">
+          <div className="h-4 w-24 bg-rose-200 rounded-full mx-auto mb-4" />
+          <div className="h-8 w-56 bg-rose-100 rounded-full mx-auto mb-3" />
+          <div className="h-4 w-40 bg-rose-50 rounded-full mx-auto" />
         </div>
+
+        {/* Form Loading */}
+        <div className="space-y-4 mb-10 animate-pulse">
+          <div>
+            <div className="h-4 w-20 bg-rose-100 rounded mb-2" />
+            <div className="h-12 w-full bg-rose-50 rounded-2xl" />
+          </div>
+
+          <div>
+            <div className="h-4 w-28 bg-rose-100 rounded mb-2" />
+            <div className="h-28 w-full bg-rose-50 rounded-2xl" />
+          </div>
+
+          <div className="flex gap-3">
+            <div className="h-11 flex-1 bg-rose-100 rounded-2xl" />
+            <div className="h-11 w-28 bg-rose-200 rounded-2xl" />
+          </div>
+        </div>
+
+        {/* Comment List */}
+        <div className="space-y-5">
+          {[1, 2, 3].map((item) => (
+            <div
+              key={item}
+              className="border border-rose-100 bg-rose-50/60 rounded-3xl p-5 animate-pulse"
+            >
+              <div className="flex items-start gap-4">
+                {/* Avatar */}
+                <div className="w-12 h-12 rounded-full bg-rose-200 shrink-0" />
+
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="h-4 w-32 bg-rose-200 rounded-full" />
+                    <div className="h-3 w-16 bg-rose-100 rounded-full" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="h-3 w-full bg-rose-100 rounded-full" />
+                    <div className="h-3 w-11/12 bg-rose-100 rounded-full" />
+                    <div className="h-3 w-8/12 bg-rose-100 rounded-full" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Decorative Flower Blur */}
+        <div className="absolute top-0 left-0 w-32 h-32 bg-rose-200/20 blur-3xl rounded-full" />
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-pink-200/20 blur-3xl rounded-full" />
       </div>
-      <h2 className="text-2xl md:text-3xl font-semibold text-gray-300 mb-2 animate-fade-in">
-        Crafting Your Experience...
-      </h2>
-      <p className="text-sm md:text-base text-gray-400 max-w-md leading-relaxed mb-6 animate-fade-in-slow">
-        We’re loading your personalized portfolio filled with creativity, modern
-        tech, and passion-driven projects. This won’t take long.
-      </p>
-      <div className="w-64 h-2 bg-gray-800 rounded-full overflow-hidden mb-4">
-        <div className="h-full bg-gradient-to-r from-gray-400 to-gray-500 animate-loading-bar rounded-full" />
-      </div>
-      <p className="text-sm text-gray-500 italic animate-fade-in-slow">
-        “Great designs start with great patience.”
-      </p>
     </div>
   );
 }
-
-export default Loading;

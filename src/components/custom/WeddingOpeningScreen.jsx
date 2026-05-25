@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   motion,
   AnimatePresence,
@@ -8,8 +8,8 @@ import { Mail, Heart } from "lucide-react";
 
 export default function WeddingOpeningScreen({
   names = { man: "Afriza", woman: "Ekka" },
-  recipientName = "Syaukani & Partner",
-  audioSrc = "/banda-neira-sampai-jadi-debu.mp3",
+  recipientName = "Tamu Undangan",
+  audioSrc = "/david-bayu-cincin-janji-hati-official.mp3",
   bgImage = "/abang-eza-1.jpeg",
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +17,29 @@ export default function WeddingOpeningScreen({
   const audioRef = useRef(null);
 
   const shouldReduceMotion = useReducedMotion();
+
+  // MOBILE DETECTION
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+
+    return window.innerWidth < 768;
+  }, []);
+
+  // GET RECIPIENT FROM URL
+  const recipient = useMemo(() => {
+    if (typeof window === "undefined") return recipientName;
+
+    const params = new URLSearchParams(window.location.search);
+
+    const to = params.get("to");
+
+    if (!to) return recipientName;
+
+    return decodeURIComponent(to.replace(/\+/g, " "));
+  }, [recipientName]);
+
+  // DISABLE HEAVY MOTION
+  const disableHeavyMotion = shouldReduceMotion || isMobile;
 
   // PRELOAD AUDIO
   useEffect(() => {
@@ -31,13 +54,12 @@ export default function WeddingOpeningScreen({
       if (audioRef.current) {
         const audio = audioRef.current;
 
-        // IMPORTANT
         audio.volume = 0;
         audio.currentTime = 0;
 
         await audio.play();
 
-        // SMOOTH FADE IN
+        // SMOOTH AUDIO FADE
         let volume = 0;
 
         const fade = setInterval(() => {
@@ -52,12 +74,10 @@ export default function WeddingOpeningScreen({
         }, 120);
       }
 
-      // OPEN AFTER AUDIO SUCCESS
       setIsOpen(true);
     } catch (err) {
       console.log("Audio play failed:", err);
 
-      // fallback tetap buka
       setIsOpen(true);
     }
   };
@@ -73,7 +93,7 @@ export default function WeddingOpeningScreen({
 
   return (
     <>
-      {/* AUDIO MUST STAY OUTSIDE ANIMATEPRESENCE */}
+      {/* AUDIO */}
       <audio
         ref={audioRef}
         loop
@@ -88,10 +108,9 @@ export default function WeddingOpeningScreen({
             initial={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              scale: shouldReduceMotion ? 1 : 1.03,
-              filter: "blur(12px)",
+              scale: 1.01,
               transition: {
-                duration: 1.2,
+                duration: 0.8,
                 ease: [0.22, 1, 0.36, 1],
               },
             }}
@@ -105,29 +124,33 @@ export default function WeddingOpeningScreen({
             {/* BACKGROUND */}
             <motion.div
               initial={{
-                scale: 1.15,
+                scale: 1.04,
                 opacity: 0,
               }}
               animate={{
-                scale: 1.05,
+                scale: 1,
                 opacity: 1,
               }}
               transition={{
-                duration: 2.2,
+                duration: 1.6,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="absolute inset-0"
+              className="
+                absolute inset-0
+                transform-gpu
+                will-change-transform
+              "
             >
               <motion.img
                 animate={
-                  shouldReduceMotion
+                  disableHeavyMotion
                     ? {}
                     : {
-                      scale: [1.05, 1.12, 1.05],
+                      y: [-8, 8, -8],
                     }
                 }
                 transition={{
-                  duration: 18,
+                  duration: 14,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
@@ -137,8 +160,12 @@ export default function WeddingOpeningScreen({
                 className="
                   h-full
                   w-full
+                  scale-[1.03]
                   object-cover
                   object-[center_35%]
+                  select-none
+                  transform-gpu
+                  will-change-transform
                 "
               />
             </motion.div>
@@ -149,20 +176,18 @@ export default function WeddingOpeningScreen({
                 absolute inset-0
                 bg-gradient-to-b
                 from-black/70
-                via-black/30
-                to-black/80
-                backdrop-blur-[2px]
+                via-black/35
+                to-black/85
               "
             />
 
-            {/* GLOW */}
+            {/* AMBIENT LIGHT */}
             <motion.div
               animate={
-                shouldReduceMotion
+                disableHeavyMotion
                   ? {}
                   : {
-                    opacity: [0.2, 0.35, 0.2],
-                    scale: [1, 1.08, 1],
+                    opacity: [0.14, 0.22, 0.14],
                   }
               }
               transition={{
@@ -174,33 +199,32 @@ export default function WeddingOpeningScreen({
                 absolute
                 left-1/2
                 top-[-180px]
-                h-[480px]
-                w-[480px]
+                h-[420px]
+                w-[420px]
                 -translate-x-1/2
                 rounded-full
                 bg-white/10
-                blur-[120px]
+                blur-[60px]
+                transform-gpu
               "
             />
 
             {/* NOISE */}
-            <div className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('/noise.png')]" />
+            <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('/noise.png')]" />
 
             {/* CONTENT */}
             <div className="relative z-10 flex h-full items-center justify-center px-5">
               <motion.div
                 initial={{
                   opacity: 0,
-                  y: 30,
-                  scale: 0.96,
+                  y: 24,
                 }}
                 animate={{
                   opacity: 1,
                   y: 0,
-                  scale: 1,
                 }}
                 transition={{
-                  duration: 1,
+                  duration: 0.9,
                   delay: 0.2,
                   ease: [0.22, 1, 0.36, 1],
                 }}
@@ -209,28 +233,36 @@ export default function WeddingOpeningScreen({
                   w-full
                   max-w-lg
                   overflow-hidden
-                  rounded-[38px]
-                  border
-                  border-white/15
-                  bg-black/45
+                  rounded-[34px]
+                  border border-white/10
+                  bg-black/40
                   p-7
                   text-center
-                  shadow-[0_40px_120px_-25px_rgba(0,0,0,1)]
-                  backdrop-blur-3xl
+                  shadow-[0_20px_60px_rgba(0,0,0,0.55)]
+                  backdrop-blur-xl
                   sm:p-10
                   md:p-12
                 "
               >
-                {/* AMBIENT */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.12] via-transparent to-white/[0.03]" />
+                {/* CARD AMBIENT */}
+                <div
+                  className="
+                    pointer-events-none
+                    absolute inset-0
+                    bg-gradient-to-br
+                    from-white/[0.08]
+                    via-transparent
+                    to-white/[0.02]
+                  "
+                />
 
                 {/* LABEL */}
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    delay: 0.4,
-                    duration: 0.8,
+                    delay: 0.35,
+                    duration: 0.7,
                   }}
                 >
                   <span
@@ -257,11 +289,11 @@ export default function WeddingOpeningScreen({
 
                 {/* NAMES */}
                 <motion.div
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    delay: 0.55,
-                    duration: 1,
+                    delay: 0.5,
+                    duration: 0.9,
                   }}
                   className="mt-8"
                 >
@@ -270,7 +302,7 @@ export default function WeddingOpeningScreen({
                       font-serif
                       text-5xl
                       leading-[1.1]
-                      tracking-[0.05em]
+                      tracking-[0.04em]
                       text-white
                       sm:text-6xl
                       md:text-7xl
@@ -281,8 +313,8 @@ export default function WeddingOpeningScreen({
                     <span
                       className="
                         my-3 block
-                        font-light
                         text-3xl
+                        font-light
                         text-white/40
                         md:text-4xl
                       "
@@ -296,20 +328,18 @@ export default function WeddingOpeningScreen({
 
                 {/* RECIPIENT */}
                 <motion.div
-                  initial={{ opacity: 0, y: 14 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    delay: 0.9,
-                    duration: 0.9,
+                    delay: 0.75,
+                    duration: 0.8,
                   }}
                   className="mt-10"
                 >
                   <div className="flex justify-center">
                     <div
                       className="
-                        flex
-                        items-center
-                        gap-2
+                        flex items-center gap-2
                         rounded-full
                         border border-white/10
                         bg-white/[0.03]
@@ -318,7 +348,14 @@ export default function WeddingOpeningScreen({
                     >
                       <Mail className="h-3.5 w-3.5 text-white/50" />
 
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                      <p
+                        className="
+                          text-[10px]
+                          uppercase
+                          tracking-[0.28em]
+                          text-white/50
+                        "
+                      >
                         Kepada Yth.
                       </p>
                     </div>
@@ -334,27 +371,32 @@ export default function WeddingOpeningScreen({
                       md:text-2xl
                     "
                   >
-                    {recipientName}
+                    {recipient}
                   </h2>
                 </motion.div>
 
                 {/* BUTTON */}
                 <motion.div
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    delay: 1.1,
-                    duration: 1,
+                    delay: 0.95,
+                    duration: 0.9,
                   }}
                   className="mt-12"
                 >
                   <motion.button
                     whileHover={{
                       y: -2,
-                      scale: 1.02,
+                      scale: 1.015,
                     }}
                     whileTap={{
-                      scale: 0.97,
+                      scale: 0.985,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 18,
                     }}
                     onClick={handleOpenInvitation}
                     className="
@@ -366,9 +408,10 @@ export default function WeddingOpeningScreen({
                       px-10
                       py-4
                       text-black
-                      shadow-[0_10px_50px_rgba(255,255,255,0.15)]
+                      shadow-lg
                     "
                   >
+                    {/* SHINE */}
                     <div
                       className="
                         absolute inset-0
@@ -402,8 +445,8 @@ export default function WeddingOpeningScreen({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{
-                    delay: 1.4,
-                    duration: 1,
+                    delay: 1.2,
+                    duration: 0.9,
                   }}
                   className="
                     mt-8

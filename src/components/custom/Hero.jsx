@@ -2,31 +2,20 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Heart, Sparkles } from "lucide-react";
 
-function Hero() {
-  const weddingDate = new Date("2026-06-06T10:00:00+08:00");
+const WEDDING_DATE = new Date("2026-06-06T14:00:00+08:00");
 
-  const shouldReduceMotion = useReducedMotion();
+const calculateTimeLeft = () => {
+  const difference = WEDDING_DATE - new Date();
 
-  const calculateTimeLeft = () => {
-    const difference = weddingDate - new Date();
-
-    return {
-      days: Math.max(0, Math.floor(difference / (1000 * 60 * 60 * 24))),
-      hours: Math.max(
-        0,
-        Math.floor((difference / (1000 * 60 * 60)) % 24),
-      ),
-      minutes: Math.max(
-        0,
-        Math.floor((difference / 1000 / 60) % 60),
-      ),
-      seconds: Math.max(
-        0,
-        Math.floor((difference / 1000) % 60),
-      ),
-    };
+  return {
+    days: Math.max(0, Math.floor(difference / (1000 * 60 * 60 * 24))),
+    hours: Math.max(0, Math.floor((difference / (1000 * 60 * 60)) % 24)),
+    minutes: Math.max(0, Math.floor((difference / 1000 / 60) % 60)),
+    seconds: Math.max(0, Math.floor((difference / 1000) % 60)),
   };
+};
 
+const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
@@ -36,6 +25,40 @@ function Hero() {
 
     return () => clearInterval(timer);
   }, []);
+
+  return (
+    <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+      {[
+        { label: "Days", value: timeLeft.days },
+        { label: "Hours", value: timeLeft.hours },
+        { label: "Minutes", value: timeLeft.minutes },
+        { label: "Seconds", value: timeLeft.seconds },
+      ].map((item, idx) => (
+        <motion.div
+          key={idx}
+          whileHover={{ y: -4 }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-col items-center justify-center rounded-[28px] border border-white/50 bg-white/50 px-4 py-8 backdrop-blur-xl"
+        >
+          <motion.span
+            initial={{ opacity: 0.5, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="font-serif text-5xl font-light text-neutral-900 md:text-7xl"
+          >
+            {String(item.value).padStart(2, "0")}
+          </motion.span>
+          <span className="mt-4 text-[11px] uppercase tracking-[0.3em] text-neutral-400">
+            {item.label}
+          </span>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+function Hero() {
+  const shouldReduceMotion = useReducedMotion();
 
   const fadeUp = {
     hidden: {
@@ -248,7 +271,7 @@ function Hero() {
               x: 0,
             }}
             viewport={{
-              once: false,
+              once: true,
               amount: 0.2,
             }}
             transition={{
@@ -353,7 +376,7 @@ function Hero() {
               x: 0,
             }}
             viewport={{
-              once: false,
+              once: true,
               amount: 0.2,
             }}
             transition={{
@@ -471,7 +494,7 @@ function Hero() {
             y: 0,
           }}
           viewport={{
-            once: false,
+            once: true,
             amount: 0.2,
           }}
           transition={{
@@ -500,77 +523,7 @@ function Hero() {
               Counting The Days
             </p>
 
-            <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
-              {[
-                {
-                  label: "Days",
-                  value: timeLeft.days,
-                },
-                {
-                  label: "Hours",
-                  value: timeLeft.hours,
-                },
-                {
-                  label: "Minutes",
-                  value: timeLeft.minutes,
-                },
-                {
-                  label: "Seconds",
-                  value: timeLeft.seconds,
-                },
-              ].map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{
-                    y: -4,
-                  }}
-                  transition={{
-                    duration: 0.3,
-                  }}
-                  className="
-                    flex
-                    flex-col
-                    items-center
-                    justify-center
-                    rounded-[28px]
-                    border
-                    border-white/50
-                    bg-white/50
-                    px-4
-                    py-8
-                    backdrop-blur-xl
-                  "
-                >
-                  <motion.span
-                    key={item.value}
-                    initial={{
-                      opacity: 0.5,
-                      y: 10,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    transition={{
-                      duration: 0.4,
-                    }}
-                    className="
-                      font-serif
-                      text-5xl
-                      font-light
-                      text-neutral-900
-                      md:text-7xl
-                    "
-                  >
-                    {String(item.value).padStart(2, "0")}
-                  </motion.span>
-
-                  <span className="mt-4 text-[11px] uppercase tracking-[0.3em] text-neutral-400">
-                    {item.label}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
+            <CountdownTimer />
           </div>
         </motion.div>
       </div>
