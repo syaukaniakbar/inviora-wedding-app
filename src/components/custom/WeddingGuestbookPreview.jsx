@@ -9,6 +9,8 @@ import {
   Heart,
   Sparkles,
   CornerDownRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import client from "../../client.jsx";
 import Loading from "./Loading.jsx";
@@ -23,9 +25,14 @@ export default function WeddingGuestbook() {
   const [replyTo, setReplyTo] = useState(null);
   const [replyName, setReplyName] = useState("");
 
+  // PAGINATION
+  const COMMENTS_PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
   // FORM REFS
   const formRef = useRef(null);
   const nameInputRef = useRef(null);
+  const commentsRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -92,6 +99,18 @@ export default function WeddingGuestbook() {
     });
   };
 
+  // HANDLE PAGE CHANGE
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+
+    requestAnimationFrame(() => {
+      commentsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
+
   // SUBMIT COMMENT
   const handleSubmit = async () => {
     if (!formData.name || !formData.message) return;
@@ -117,6 +136,9 @@ export default function WeddingGuestbook() {
         },
         ...prev,
       ]);
+
+      // RESET TO FIRST PAGE
+      setCurrentPage(1);
 
       // RESET FORM
       setFormData({
@@ -148,6 +170,16 @@ export default function WeddingGuestbook() {
     (item) => !item.parentId
   );
 
+  // PAGINATION
+  const totalPages = Math.ceil(
+    parentComments.length / COMMENTS_PER_PAGE
+  );
+
+  const paginatedComments = parentComments.slice(
+    (currentPage - 1) * COMMENTS_PER_PAGE,
+    currentPage * COMMENTS_PER_PAGE
+  );
+
   // GET REPLIES
   const getReplies = (commentId) => {
     return comments.filter(
@@ -163,6 +195,42 @@ export default function WeddingGuestbook() {
       year: "numeric",
     });
   };
+
+  // PAGE NUMBERS
+  const visiblePages = useMemo(() => {
+    const pages = [];
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages
+        );
+      }
+    }
+
+    return pages;
+  }, [currentPage, totalPages]);
 
   return (
     <LazyMotion features={domAnimation}>
@@ -364,6 +432,7 @@ export default function WeddingGuestbook() {
 
             {/* COMMENTS */}
             <motion.div
+              ref={commentsRef}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -397,7 +466,7 @@ export default function WeddingGuestbook() {
                 {isLoading || isSubmitting ? (
                   <Loading />
                 ) : (
-                  parentComments.map((comment) => {
+                  paginatedComments.map((comment) => {
                     const initials = comment.name
                       .split(" ")
                       .slice(0, 2)
@@ -514,6 +583,87 @@ export default function WeddingGuestbook() {
                   })
                 )}
               </div>
+
+              {/* PAGINATION */}
+              {!isLoading && totalPages > 1 && (
+                <div className="mt-10 rounded-[28px] border border-white/50 bg-white/60 p-4 shadow-sm backdrop-blur-xl sm:p-5">
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    {/* INFO */}
+                    <div className="text-center sm:text-left">
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-neutral-400">
+                        Comment Pages
+                      </p>
+
+                      <p className="mt-2 text-sm text-neutral-600">
+                        Showing page{" "}
+                        <span className="font-medium text-neutral-900">
+                          {currentPage}
+                        </span>{" "}
+                        of{" "}
+                        <span className="font-medium text-neutral-900">
+                          {totalPages}
+                        </span>
+                      </p>
+                    </div>
+
+                    {/* CONTROLS */}
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      {/* PREV */}
+                      <button
+                        onClick={() =>
+                          handlePageChange(currentPage - 1)
+                        }
+                        disabled={currentPage === 1}
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-black/5 bg-white px-4 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 transition-all duration-300 hover:border-neutral-300 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-40"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                        Prev
+                      </button>
+
+                      {/* PAGE NUMBERS */}
+                      {visiblePages.map((page, index) => {
+                        if (page === "...") {
+                          return (
+                            <span
+                              key={index}
+                              className="px-2 text-sm text-neutral-400"
+                            >
+                              ...
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <button
+                            key={page}
+                            onClick={() =>
+                              handlePageChange(page)
+                            }
+                            className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-medium transition-all duration-300 ${currentPage === page
+                              ? "bg-neutral-900 text-white shadow-lg"
+                              : "border border-black/5 bg-white text-neutral-600 hover:border-neutral-300 hover:text-neutral-900"
+                              }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })}
+
+                      {/* NEXT */}
+                      <button
+                        onClick={() =>
+                          handlePageChange(currentPage + 1)
+                        }
+                        disabled={currentPage === totalPages}
+                        className="flex min-h-[44px] items-center gap-2 rounded-full border border-black/5 bg-white px-4 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 transition-all duration-300 hover:border-neutral-300 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-40"
+                      >
+                        Next
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
